@@ -1,23 +1,5 @@
 import numpy as np
 
-def group_roots(real_roots, tolerance=1e-5):
-    grouped = []
-    for root in real_roots:
-        if len(grouped) == 0:
-            grouped.append([root, 1])
-        else:
-            last_root = grouped[-1][0]
-            if abs(root - last_root) < tolerance:
-                grouped[-1][1] += 1
-            else:
-                grouped.append([root, 1])
-
-    return grouped
-                
-
-    
-
-
 
 def analyze_polynomial(coeffs):
 
@@ -78,7 +60,22 @@ def analyze_polynomial(coeffs):
     # Sort roots left -> right
     real_roots = np.sort(real_roots)
 
-    grouped_roots = group_roots(real_roots)
+
+    cleaned_roots = []
+
+    cleaned_roots.append(real_roots[0])
+
+    for root in real_roots[1:]:
+        last_root = cleaned_roots[-1]
+        # if the distance between these 2 roots is less than 0.00001, consider them numerically the same root
+        if np.isclose(root, last_root, atol=1e-5):
+            continue
+        cleaned_roots.append(root)
+
+    real_roots = np.array(cleaned_roots)
+    real_roots = np.sort(real_roots)    
+
+    
 
     # ---------------------------------------------------
     # INTERVALS
@@ -179,6 +176,24 @@ def analyze_polynomial(coeffs):
 
         sign_behavior.append((interval, sign))
 
+
+    # multiplicity detection 
+
+    root_multiplicities = []
+
+    for i, root in enumerate(real_roots):
+        left_sign = signs[i]
+        right_sign = signs[i + 1]
+        if left_sign != right_sign:
+            multiplicity = "odd"
+            behavior = "crosses x-axis"
+        else:
+            multiplicity = "even"
+            behavior = "BOUNCES off x-axis"
+        root_multiplicities.append((root, f"multiplicity: {multiplicity}, behavior: {behavior}"))
+
+
+
     # ---------------------------------------------------
     # FORMATTED OUTPUT
     # ---------------------------------------------------
@@ -214,12 +229,15 @@ def analyze_polynomial(coeffs):
 
         print(f"{interval}: {sign}")
 
-    print(grouped_roots)    
+    print("\nRoot multiplicities:")
+    for root, multiplicity_info in root_multiplicities:
+
+        print(f"Root: {root}, {multiplicity_info}")
 
 
 
 
 
 if __name__ == "__main__":
-    coeffs = [1, 0, -1]  # x² - 1
+    coeffs = [1, 0, -3, 2]  # x³ - 3x + 2
     analyze_polynomial(coeffs)
