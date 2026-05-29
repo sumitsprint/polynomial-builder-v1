@@ -5,8 +5,12 @@ def first_difference(y):
 def detect_degree(y):
     if len(y) < 2:
         raise ValueError("not enough data points")
+    
     current = y
     degree = 0
+    if np.all(y == y[0]):
+        return 0
+    
     while True:
         diffs = np.diff(current)
         degree += 1
