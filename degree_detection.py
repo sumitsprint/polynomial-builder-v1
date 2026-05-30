@@ -8,6 +8,9 @@ def detect_degree(y):
     
     current = y
     degree = 0
+    if np.all(y == 0):
+        raise ValueError("Zero polynomial has undefined degree.")
+
     if np.all(y == y[0]):
         return 0
     
