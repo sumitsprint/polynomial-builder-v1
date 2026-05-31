@@ -217,6 +217,7 @@ def analyze_polynomial(coeffs):
                 multiplicity = "even"
                 behavior = "BOUNCES off x-axis"
             root_multiplicities.append((root, f"multiplicity: {multiplicity}, behavior: {behavior}"))
+           
 
 
 
@@ -259,6 +260,7 @@ def analyze_polynomial(coeffs):
     for root, multiplicity_info in root_multiplicities:
 
         print(f"Root: {root}, {multiplicity_info}")
+       
 
 
 
