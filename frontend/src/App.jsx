@@ -10,6 +10,8 @@ function App() {
     {x: "", y: ""},
     {x: "", y: ""},
     ]);
+
+    const [result, setResult] = useState("");
   
     
 
@@ -28,11 +30,11 @@ function App() {
             </tr>
           </thead>
         <tbody>
-          {coordinates.map((points, index) => (
+          {coordinates.map((point, index) => (
             <tr key = {index}>
               <td>
             <input
-            value = {points.x}
+            value = {point.x}
             onChange = {(e) => {const updated = [...coordinates];
               updated[index].x = e.target.value;
               setCoordinates(updated);
@@ -41,7 +43,7 @@ function App() {
               </td>
               <td>
                 <input
-                value = {points.y}
+                value = {point.y}
                 onChange = {(e) => {const updated = [...coordinates];
                   updated[index].y = e.target.value;
                   setCoordinates(updated);
@@ -57,6 +59,21 @@ function App() {
           ))}
         </tbody>
       </table>
+      {/* <button onClick={() => {
+        const tupleString = coordinates.map(point => `(${point.x}, ${point.y})`).join(', ');
+        setResult(tupleString);
+
+
+      }}>Analyse</button>       */}
+        <button onClick={() => {
+          setResult(JSON.stringify(coordinates, null, 2));
+        }}>Analyse</button>
+     <pre>
+      {result}
+     </pre>
+      
+
+      
 
       </div>
     
