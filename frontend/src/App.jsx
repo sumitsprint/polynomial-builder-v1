@@ -65,12 +65,16 @@ function App() {
 
 
       }}>Analyse</button>       */}
-        <button onClick={() => {
-          setResult(JSON.stringify(coordinates, null, 2));
-        }}>Analyse</button>
-     <pre>
-      {result}
-     </pre>
+       <button onClick = {async () => {
+        const response = await fetch('http://127.0.0.1:8000/analyse', {method: 'POST', 
+          headers: {'content-type': 'application/JSON'},
+          body: JSON.stringify(coordinates)
+        });
+        const data = await response.json();
+        console.log(data);
+
+       }}>Analyse</button>
+     
       
 
       
