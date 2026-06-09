@@ -1,4 +1,4 @@
-from data_input import get_data
+from data_input import validate_spacing
 from degree_detection import detect_degree
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,7 +6,7 @@ from analysis import analyze_polynomial
 
 
 
-x, y = get_data()
+x, y = validate_spacing()
 degree = detect_degree(y)
 coeffs = np.polyfit(x, y, degree)
 coeffs = np.round(coeffs, 10)

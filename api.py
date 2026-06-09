@@ -1,6 +1,9 @@
 from typing import List
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from data_input import validate_spacing
+from degree_detection import detect_degree
+import numpy as np
 
 
 app = FastAPI()
@@ -19,12 +22,26 @@ def root():
 
 @app.post("/analyse")
 async def analyse(coordinates: List[dict]):
-    print(coordinates)
-    return {"message": "Analysis complete!"}
-#     # Perform analysis on the coordinates
-#     # For example, you could calculate the polynomial coefficients here
-#     # and return them as a response
-#     return {"hello This is the analysis result!"}
+    x = [float(point['x']) for point in coordinates]
+    y = [float(point['y']) for point in coordinates]
+    x, y = validate_spacing(x, y)
+    degree = detect_degree(y)
+    coeffs = np.polyfit(x, y, degree)
+    coeffs = np.round(coeffs, 10)
+    coeffs[np.isclose(coeffs, 0)] = 0
+    return {"degree": degree, "x": x.tolist(), "y": y.tolist(), "coeffs": coeffs.tolist()}
+
+
+
+    
+    
+
+
+
+
+
+
+    
 
 
 

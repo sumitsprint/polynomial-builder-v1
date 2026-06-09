@@ -1,5 +1,5 @@
 import numpy as np
-def get_data():
+def validate_spacing(x, y):
 
     # x = [-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10]
     # y = [100,81,64,49,36,25,16,9,4,1,0,1,4,9,16,25,36,49,64,81,100]
@@ -13,8 +13,8 @@ def get_data():
     # y= [0,0,0,0,0]
     # x = [0,1,2,3,4]
     # y = [-5,-5,-5,-5,-5]
-    x= [0,1,2,3,4]
-    y = [2,0,4,20,54]
+    # x= [0,1,2,3,4]
+    # y = [2,0,4,20,54]
     if len(x) < 2:
         raise ValueError("x must have at least two elements to check spacing.")
     diffs = np.diff(x)

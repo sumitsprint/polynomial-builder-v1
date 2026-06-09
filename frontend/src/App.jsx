@@ -9,10 +9,41 @@ function App() {
     {x: "", y: ""},
     {x: "", y: ""},
     {x: "", y: ""},
+    {x: "", y: ""}
     ]);
 
     const [result, setResult] = useState("");
+    const [polyString, setPolyString] = useState("");
+    const [coeffs, setCoeffs] = useState(null);
+
+    function polynomialString(coeffs) {
+      if (!coeffs || coeffs.length === 0) return "";
+
+      let deg = coeffs.length - 1;
+      let terms = [];
+      coeffs.forEach((coeff, i) => {
+        if (coeff === 0) return;
+        let power = deg - i;
+        let term = "";
+
+        if (power === 0) {
+          term = ` ${coeff} `;
+        }
+        else if (power === 1) {
+          term = ` ${coeff}x `;
+        }
+        else {
+ 
+        term = ` ${coeff}x^${power} `;
+        
+      }
+      terms.push(term);
+      })
+      return terms.join(' + ');
+    }
   
+    
+    
     
 
 
@@ -59,21 +90,29 @@ function App() {
           ))}
         </tbody>
       </table>
-      {/* <button onClick={() => {
-        const tupleString = coordinates.map(point => `(${point.x}, ${point.y})`).join(', ');
-        setResult(tupleString);
-
-
-      }}>Analyse</button>       */}
+      
        <button onClick = {async () => {
         const response = await fetch('http://127.0.0.1:8000/analyse', {method: 'POST', 
           headers: {'content-type': 'application/JSON'},
           body: JSON.stringify(coordinates)
         });
         const data = await response.json();
-        console.log(data);
+        console.log(data.coeffs);
+        setCoeffs(data.coeffs);
+        
+        setPolyString(polynomialString(data.coeffs));
+        
 
        }}>Analyse</button>
+       <div>
+         {polyString && <p>Polynomial: {polyString}</p>}
+
+       </div>
+       
+       
+    
+
+        
      
       
 
