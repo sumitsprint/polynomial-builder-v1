@@ -1,7 +1,8 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { useState, useEffect, useRef } from 'react'
+import Desmos from 'desmos'
+
+
+
 import './App.css'
 
 function App() {
@@ -12,9 +13,9 @@ function App() {
     {x: "", y: ""}
     ]);
 
-    const [result, setResult] = useState("");
+    
     const [polyString, setPolyString] = useState("");
-    const [coeffs, setCoeffs] = useState(null);
+    
 
     function polynomialString(coeffs) {
       if (!coeffs || coeffs.length === 0) return "";
@@ -24,26 +25,49 @@ function App() {
       coeffs.forEach((coeff, i) => {
         if (coeff === 0) return;
         let power = deg - i;
+
+        let absoluteCoeff = Math.abs(coeff);
+
         let term = "";
 
         if (power === 0) {
-          term = ` ${coeff} `;
+          term = ` ${absoluteCoeff} `;
         }
         else if (power === 1) {
-          term = ` ${coeff}x `;
+          term = ` ${absoluteCoeff}x `;
         }
         else {
  
-        term = ` ${coeff}x^${power} `;
+        term = ` ${absoluteCoeff}x^${power} `;
         
       }
+      // what does it do 
+        if (absoluteCoeff === 1 && power > 0) {
+          term = term.replace("1", "");
+        }
+        if (coeff < 0) {
+          term = " - " + term;
+        }
+        else if (terms.length > 0) {
+          term = " + " + term;
+        }
       terms.push(term);
       })
-      return terms.join(' + ');
+      if (terms.length === 0) return "0"; // this is for 0 p(x)
+      
+      return terms.join(" ");
     }
-  
-    
-    
+
+    const calculatorRef = useRef(null);
+
+    useEffect(() => {
+      const calculator = Desmos.GraphingCalculator(calculatorRef.current);
+      return () => {
+        calculator.destroy();
+      };
+
+
+    }, []);
     
 
 
@@ -90,6 +114,7 @@ function App() {
           ))}
         </tbody>
       </table>
+      {/* all recieves an event object */}
       
        <button onClick = {async () => {
         const response = await fetch('http://127.0.0.1:8000/analyse', {method: 'POST', 
@@ -98,27 +123,23 @@ function App() {
         });
         const data = await response.json();
         console.log(data.coeffs);
-        setCoeffs(data.coeffs);
+        
         
         setPolyString(polynomialString(data.coeffs));
         
 
        }}>Analyse</button>
        <div>
-         {polyString && <p>Polynomial: {polyString}</p>}
+         {polyString && <p>P(x) = {polyString}</p>}
 
        </div>
-       
-       
-    
-
-        
-     
-      
-
-      
-
-      </div>
+       <>
+      <div
+        ref={calculatorRef}
+        style={{ width: "600px", height: "400px" }}
+      />
+    </>
+        </div>
     
   )
 }
