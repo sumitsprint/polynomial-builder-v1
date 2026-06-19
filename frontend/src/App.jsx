@@ -59,11 +59,12 @@ function App() {
     }
 
     const calculatorRef = useRef(null);
+    const desmosRef = useRef(null);
 
     useEffect(() => {
-      const calculator = Desmos.GraphingCalculator(calculatorRef.current);
+      desmosRef.current =  Desmos.GraphingCalculator(calculatorRef.current);
       return () => {
-        calculator.destroy();
+        desmosRef.current.destroy();
       };
 
 
@@ -121,11 +122,17 @@ function App() {
           headers: {'content-type': 'application/JSON'},
           body: JSON.stringify(coordinates)
         });
+        
         const data = await response.json();
-        console.log(data.coeffs);
-        
-        
-        setPolyString(polynomialString(data.coeffs));
+
+        const poly = polynomialString(data.coeffs);
+
+        setPolyString(poly);
+
+        desmosRef.current.setExpression({
+        id: "poly",
+        latex: poly
+        });
         
 
        }}>Analyse</button>

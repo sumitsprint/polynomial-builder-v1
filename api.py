@@ -25,6 +25,10 @@ async def analyse(coordinates: List[dict]):
     x = [float(point['x']) for point in coordinates]
     y = [float(point['y']) for point in coordinates]
     x, y = validate_spacing(x, y)
+    #for handling the 0 p(x)
+    if np.all(y == 0):
+        return {"coeffs": [0]
+                }
     degree = detect_degree(y)
     coeffs = np.polyfit(x, y, degree)
     coeffs = np.round(coeffs, 10)
