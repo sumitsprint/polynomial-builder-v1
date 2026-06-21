@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Desmos from 'desmos'
+import katex from "katex";
+import "katex/dist/katex.min.css";
 
 
 
@@ -15,6 +17,9 @@ function App() {
 
     
     const [polyString, setPolyString] = useState("");
+    const [polyLatex, setPolyLatex] = useState("");
+
+    
     
 
     function polynomialString(coeffs) {
@@ -56,6 +61,17 @@ function App() {
       if (terms.length === 0) return "0"; // this is for 0 p(x)
       
       return terms.join(" ");
+    }
+
+    // new func
+
+    
+// new func
+
+    function polynomialLatex(coeffs){
+      return polynomialString(coeffs);
+      
+
     }
 
     const calculatorRef = useRef(null);
@@ -117,7 +133,7 @@ function App() {
       </table>
       {/* all recieves an event object */}
       
-       <button onClick = {async () => {
+       <button style={{marginBottom: "20px", marginTop: "20px"}} onClick = {async () => {
         const response = await fetch('http://127.0.0.1:8000/analyse', {method: 'POST', 
           headers: {'content-type': 'application/JSON'},
           body: JSON.stringify(coordinates)
@@ -126,8 +142,11 @@ function App() {
         const data = await response.json();
 
         const poly = polynomialString(data.coeffs);
+        const latex = polynomialLatex(data.coeffs)
+
 
         setPolyString(poly);
+        setPolyLatex(latex);
 
         desmosRef.current.setExpression({
         id: "poly",
@@ -136,14 +155,25 @@ function App() {
         
 
        }}>Analyse</button>
-       <div>
-         {polyString && <p>P(x) = {polyString}</p>}
+       <div style={{marginBottom: "20px", marginTop: "20px"}}>
+         {polyLatex && (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: katex.renderToString(
+                `y=${polyLatex}`,
+                {
+                  throwOnError: false
+                }
+              )
+            }}
+          />
+          )}
 
        </div>
        <>
       <div
         ref={calculatorRef}
-        style={{ width: "600px", height: "400px" }}
+        style={{ width: "600px", height: "400px", marginTop: "20px" }}
       />
     </>
         </div>
