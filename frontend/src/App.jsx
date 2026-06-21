@@ -134,7 +134,7 @@ function App() {
       {/* all recieves an event object */}
       
        <button style={{marginBottom: "20px", marginTop: "20px"}} onClick = {async () => {
-        const response = await fetch('http://127.0.0.1:8000/analyse', {method: 'POST', 
+        const response = await fetch('https://polynomial-builder-backend.onrender.com/analyse', {method: 'POST', 
           headers: {'content-type': 'application/JSON'},
           body: JSON.stringify(coordinates)
         });
