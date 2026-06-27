@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from data_input import validate_spacing
 from degree_detection import detect_degree
 import numpy as np
+from fastapi import HTTPException
 
 
 app = FastAPI()
@@ -24,7 +25,13 @@ def root():
 async def analyse(coordinates: List[dict]):
     x = [float(point['x']) for point in coordinates]
     y = [float(point['y']) for point in coordinates]
-    x, y = validate_spacing(x, y)
+    try:
+        x, y = validate_spacing(x, y)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=400,
+            detail=str(e)
+        )    
     #for handling the 0 p(x)
     if np.all(y == 0):
         return {"coeffs": [0]

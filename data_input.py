@@ -20,7 +20,7 @@ def validate_spacing(x, y):
     diffs = np.diff(x)
 
     if not np.all(diffs == diffs[0]):  # it will enter if ut is true
-        raise ValueError("x values must be equally spaced for finite differences.")
+        raise ValueError("X values must be equally spaced (e.g. 0, 1, 2, 3, 4).")
     return np.array(x), np.array(y)
 
 
