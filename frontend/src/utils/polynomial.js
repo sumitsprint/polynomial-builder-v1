@@ -41,8 +41,4 @@ export function polynomialString(coeffs) {
 
     
 
-   export function polynomialLatex(coeffs){
-      return polynomialString(coeffs);
-      
-
-    }
+   

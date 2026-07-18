@@ -1,7 +1,7 @@
 import { useState} from 'react'
 
 
-import { polynomialString, polynomialLatex } from './utils/polynomial';
+import { polynomialString } from './utils/polynomial';
 import CoordinateTable from './CoordinateTable';
 import PolynomialDisplay from './PolynomialDisplay';
 import Graph from './Graph';
@@ -32,7 +32,7 @@ export default function App() {
           setError("");
           
 
-        const response = await fetch('http://127.0.0.1:8000/analyse', {method: 'POST', 
+        const response = await fetch('https://polynomial-builder-backend.onrender.com/analyse', {method: 'POST', 
           headers: {'content-type': 'application/JSON'},
           body: JSON.stringify(coordinates)
         });
@@ -43,8 +43,7 @@ export default function App() {
         }
 
         const poly = polynomialString(data.coeffs);
-        const latex = polynomialLatex(data.coeffs)
-
+        const latex = poly
 
         
         setPolyLatex(latex);
