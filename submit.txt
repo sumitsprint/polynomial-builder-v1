@@ -1,2 +1,0 @@
-https://polynomial-builder-v1.vercel.app/
-https://polynomial-builder-backend.onrender.com
