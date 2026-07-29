@@ -1,41 +1,38 @@
-# Polynomial Builder v1
+# Polynomial Builder V1
 
-Polynomial Builder v1 is a numerical polynomial analysis engine built using Python and NumPy.
+Polynomial Builder V1 is a full-stack web application that takes 2D coordinates as input, determines the polynomial that passes through those points, displays the equation in mathematical notation, and plots the graph.
 
-## Why I Built It
 
-The project started as an exploration of:
+## What it does
 
-- finite differences
-- polynomial fitting
-- root behavior
-- sign analysis
-- multiplicity inference
+- Accepts a set of 2D coordinates as input.
+- Determines the degree of the polynomial using the finite differences method.
+- Computes the polynomial coefficients using NumPy.
+- Displays the polynomial equation in mathematical notation using KaTeX.
+- Plots the polynomial graph interactively using Desmos.
 
-The goal is to gradually build an interpretable polynomial analysis system instead of relying on symbolic algebra systems.
 
-## Current Features
+## How it works
 
-- Polynomial degree detection using finite differences
-- Polynomial fitting using NumPy
-- Root detection
-- Interval sign analysis
-- End behavior analysis
-- Multiplicity inference (in progress)
-- Crossing vs touching root interpretation
+1. The user enters a set of 2D coordinates.
+2. The backend validates that the x-values are equally spaced.
+3. The polynomial degree is determined using the finite differences method.
+4. NumPy's `polyfit` computes the polynomial coefficients.
+5. The backend returns the coefficients to the frontend.
+6. The frontend formats the polynomial using KaTeX and plots it interactively using Desmos.
 
-## Architecture
 
-Current pipeline:
+## Tech Stack
 
-Data Input
-→ Degree Detection
-→ Polynomial Fitting
-→ Root Analysis
-→ Interval Analysis
-→ Geometric Interpretation
+### Frontend
+- React
+- Vite
+- JavaScript
+- KaTeX
+- Desmos API
 
-## Future Direction
+### Backend
+- FastAPI
+- Python
+- NumPy
 
-- Multiplicity visualization
-- Graph interpretation layer
